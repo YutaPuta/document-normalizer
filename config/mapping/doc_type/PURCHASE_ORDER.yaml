@@ -1,0 +1,96 @@
+description: "発注書固有のマッピング設定"
+
+mappings:
+  delivery_date:
+    from:
+      - "納期"
+      - "納入期限"
+      - "納品予定日"
+      - "DeliveryDate"
+      - "ExpectedDelivery"
+    transform:
+      - "to_date:%Y-%m-%d"
+  
+  delivery_address:
+    from:
+      - "納品先"
+      - "納入先"
+      - "配送先"
+      - "お届け先"
+      - "DeliveryAddress"
+      - "ShipTo"
+    transform:
+      - "normalize_japanese"
+  
+  supplier_name:
+    from:
+      - "発注先"
+      - "仕入先"
+      - "サプライヤー"
+      - "SupplierName"
+      - "VendorName"
+    transform:
+      - "normalize_japanese"
+  
+  purchase_terms:
+    from:
+      - "取引条件"
+      - "購買条件"
+      - "PurchaseTerms"
+      - "Terms"
+    transform:
+      - "trim"
+  
+  requester:
+    from:
+      - "発注者"
+      - "購買担当"
+      - "担当者"
+      - "Requester"
+      - "Buyer"
+    transform:
+      - "normalize_japanese"
+
+lines:
+  table:
+    headers:
+      description:
+        - "品目"
+        - "品名"
+        - "商品名"
+        - "部品名"
+        - "Description"
+        - "Item"
+        - "PartName"
+      qty:
+        - "数量"
+        - "発注数"
+        - "注文数"
+        - "Quantity"
+        - "OrderQty"
+      unit_price:
+        - "単価"
+        - "仕入単価"
+        - "UnitPrice"
+        - "Cost"
+      amount:
+        - "金額"
+        - "小計"
+        - "合計"
+        - "Amount"
+        - "LineTotal"
+      delivery_date:
+        - "納期"
+        - "納入日"
+        - "DeliveryDate"
+    defaults:
+      tax_rate: 0.10
+
+post_compute:
+  - |
+    if not totals.get('subtotal') and totals.get('grand_total'):
+        totals['subtotal'] = round(totals['grand_total'] / 1.10, 0)
+        totals['tax'] = totals['grand_total'] - totals['subtotal']
+  - |
+    if not totals.get('tax') and totals.get('subtotal') and totals.get('grand_total'):
+        totals['tax'] = totals['grand_total'] - totals['subtotal']

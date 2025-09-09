@@ -1,0 +1,101 @@
+version: 1
+description: "グローバルマッピング設定 - 全文書タイプ共通"
+
+mappings:
+  document_no:
+    from: 
+      - "請求番号"
+      - "伝票番号"
+      - "発注番号"
+      - "注文番号"
+      - "InvoiceNumber"
+      - "PurchaseOrderNumber"
+      - "DocumentNumber"
+    transform: 
+      - "trim"
+      - "upper"
+  
+  issue_date:
+    from:
+      - "発行日"
+      - "請求日"
+      - "発注日"
+      - "注文日"
+      - "作成日"
+      - "InvoiceDate"
+      - "OrderDate"
+      - "IssueDate"
+    transform:
+      - "to_date:%Y-%m-%d"
+  
+  grand_total:
+    from:
+      - "合計金額"
+      - "総額"
+      - "お支払金額"
+      - "合計（税込）"
+      - "ご請求金額"
+      - "TotalAmount"
+      - "GrandTotal"
+    transform:
+      - "strip_currency"
+      - "to_decimal:2"
+  
+  subtotal:
+    from:
+      - "小計"
+      - "税抜金額"
+      - "税抜合計"
+      - "SubTotal"
+      - "NetAmount"
+    transform:
+      - "strip_currency"
+      - "to_decimal:2"
+  
+  tax:
+    from:
+      - "消費税"
+      - "税額"
+      - "消費税額"
+      - "Tax"
+      - "VAT"
+    transform:
+      - "strip_currency"
+      - "to_decimal:2"
+  
+  currency:
+    from:
+      - "通貨"
+      - "Currency"
+    transform:
+      - "upper"
+    default: "JPY"
+  
+  vendor_address:
+    from:
+      - "住所"
+      - "所在地"
+      - "請求元住所"
+      - "Address"
+      - "VendorAddress"
+    transform:
+      - "normalize_japanese"
+  
+  vendor_phone:
+    from:
+      - "電話番号"
+      - "TEL"
+      - "Tel"
+      - "Phone"
+      - "PhoneNumber"
+    transform:
+      - "normalize_phone"
+  
+  vendor_postal_code:
+    from:
+      - "郵便番号"
+      - "〒"
+      - "PostalCode"
+      - "ZipCode"
+    transform:
+      - "normalize_postal_code"

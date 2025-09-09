@@ -1,0 +1,78 @@
+description: "データ検証ルール設定"
+
+amount_checks:
+  check_tax_calculation: true
+  tolerance: 1.0  # 許容誤差（円）
+  check_line_totals: true
+  line_tolerance: 10.0  # 明細合計の許容誤差（円）
+  
+date_checks:
+  due_after_issue: true  # 支払期限は発行日より後である必要がある
+  max_payment_terms: 90  # 最大支払期間（日数）
+  allow_future_dates: false  # 未来日付を許可するか
+  max_future_days: 30  # 許可する最大未来日数
+
+required_fields:
+  INVOICE:
+    - "doc.document_no"
+    - "doc.issue_date"
+    - "doc.vendor"
+    - "totals.grand_total"
+  
+  PURCHASE_ORDER:
+    - "doc.document_no"
+    - "doc.issue_date"
+    - "doc.vendor"
+    - "totals.grand_total"
+
+field_constraints:
+  "doc.document_no":
+    min_length: 1
+    max_length: 50
+    pattern: "^[A-Za-z0-9\\-/_]+$"
+  
+  "doc.currency":
+    pattern: "^[A-Z]{3}$"
+    allowed_values:
+      - "JPY"
+      - "USD"
+      - "EUR"
+      - "GBP"
+      - "CNY"
+  
+  "totals.grand_total":
+    min_value: 0
+    max_value: 999999999
+  
+  "totals.tax":
+    min_value: 0
+    max_value: 999999999
+
+duplicate_check:
+  enabled: true
+  check_fields:
+    - "vendor"
+    - "document_no"
+  time_window_days: 365  # 重複チェック期間（日数）
+
+confidence_thresholds:
+  minimum_field_confidence: 0.7  # 最小フィールド信頼度
+  minimum_document_confidence: 0.8  # 最小ドキュメント信頼度
+  critical_fields:  # これらのフィールドは高い信頼度が必要
+    - "document_no"
+    - "grand_total"
+    - "issue_date"
+  critical_field_confidence: 0.9
+
+business_rules:
+  invoice:
+    - description: "請求書の日付は本日以前である必要がある"
+      rule: "doc.issue_date <= today"
+    - description: "消費税は小計の8%または10%である必要がある"
+      rule: "totals.tax in [totals.subtotal * 0.08, totals.subtotal * 0.10]"
+  
+  purchase_order:
+    - description: "納期は発注日より後である必要がある"
+      rule: "doc.delivery_date > doc.issue_date"
+    - description: "発注金額は0より大きい必要がある"
+      rule: "totals.grand_total > 0"

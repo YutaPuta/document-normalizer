@@ -1,0 +1,80 @@
+description: "請求書固有のマッピング設定"
+
+mappings:
+  due_date:
+    from:
+      - "支払期日"
+      - "お支払期限"
+      - "支払期限"
+      - "振込期限"
+      - "DueDate"
+      - "PaymentDueDate"
+    transform:
+      - "to_date:%Y-%m-%d"
+  
+  payment_terms:
+    from:
+      - "支払条件"
+      - "お支払条件"
+      - "PaymentTerms"
+    transform:
+      - "trim"
+  
+  bank_account:
+    from:
+      - "振込先"
+      - "銀行口座"
+      - "お振込先"
+      - "BankAccount"
+    transform:
+      - "normalize_japanese"
+  
+  customer_name:
+    from:
+      - "請求先"
+      - "お客様名"
+      - "宛先"
+      - "CustomerName"
+      - "BillTo"
+    transform:
+      - "normalize_japanese"
+
+lines:
+  table:
+    headers:
+      description:
+        - "品目"
+        - "品名"
+        - "摘要"
+        - "商品名"
+        - "内容"
+        - "Description"
+        - "Item"
+      qty:
+        - "数量"
+        - "数"
+        - "個数"
+        - "Quantity"
+        - "Qty"
+      unit_price:
+        - "単価"
+        - "UnitPrice"
+        - "Price"
+      amount:
+        - "金額"
+        - "小計"
+        - "金額（税込）"
+        - "金額（税抜）"
+        - "Amount"
+        - "LineTotal"
+    defaults:
+      tax_rate: 0.10
+
+post_compute:
+  - |
+    if not totals.get('subtotal') and totals.get('grand_total'):
+        totals['subtotal'] = round(totals['grand_total'] / 1.10, 0)
+        totals['tax'] = totals['grand_total'] - totals['subtotal']
+  - |
+    if not totals.get('tax') and totals.get('subtotal') and totals.get('grand_total'):
+        totals['tax'] = totals['grand_total'] - totals['subtotal']

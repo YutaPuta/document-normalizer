@@ -1,0 +1,51 @@
+description: "株式会社エグザンプル - 請求書カスタムマッピング"
+
+mappings:
+  document_no:
+    from:
+      - "請求No."
+      - "請求管理番号"
+    transform:
+      - "trim"
+      - "regex:([A-Z0-9-]+)"
+  
+  issue_date:
+    from:
+      - "請求書発行日"
+    transform:
+      - "parse_japanese_date"
+  
+  due_date:
+    from:
+      - "お振込期限"
+    transform:
+      - "parse_japanese_date"
+  
+  customer_code:
+    from:
+      - "お客様コード"
+      - "顧客番号"
+    transform:
+      - "trim"
+
+lines:
+  table:
+    headers:
+      description:
+        - "商品・サービス名"
+        - "内訳"
+      qty:
+        - "個数"
+      unit_price:
+        - "単価（税抜）"
+      amount:
+        - "金額（税込）"
+    defaults:
+      tax_rate: 0.10
+
+post_compute:
+  - |
+    # エグザンプル社は税込金額のみ記載のため、税抜金額を逆算
+    for line in lines:
+        if 'amount' in line and 'unit_price' not in line:
+            line['unit_price'] = round(line['amount'] / line.get('qty', 1) / 1.10, 0)

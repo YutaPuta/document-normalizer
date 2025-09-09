@@ -1,0 +1,87 @@
+description: "ベンダー分類用設定"
+
+株式会社エグザンプル:
+  company_names:
+    - "株式会社エグザンプル"
+    - "エグザンプル"
+    - "Example Corp"
+  phone_patterns:
+    - "03-1234-5678"
+    - "0312345678"
+  domains:
+    - "@example.co.jp"
+    - "example.co.jp"
+  addresses:
+    - "東京都千代田区"
+    - "〒100-0001"
+
+株式会社サンプル商事:
+  company_names:
+    - "株式会社サンプル商事"
+    - "サンプル商事"
+    - "Sample Trading"
+  phone_patterns:
+    - "06-9876-5432"
+    - "0698765432"
+  domains:
+    - "@sample-shoji.jp"
+    - "sample-shoji.jp"
+  addresses:
+    - "大阪府大阪市"
+    - "〒530-0001"
+
+テスト工業株式会社:
+  company_names:
+    - "テスト工業株式会社"
+    - "テスト工業"
+    - "Test Industries"
+  phone_patterns:
+    - "052-111-2222"
+    - "0521112222"
+  domains:
+    - "@test-ind.co.jp"
+    - "test-ind.co.jp"
+  addresses:
+    - "愛知県名古屋市"
+    - "〒460-0001"
+
+デモシステム合同会社:
+  company_names:
+    - "デモシステム合同会社"
+    - "デモシステム"
+    - "Demo Systems LLC"
+  phone_patterns:
+    - "092-333-4444"
+    - "0923334444"
+  domains:
+    - "@demo-sys.com"
+    - "demo-sys.com"
+  addresses:
+    - "福岡県福岡市"
+    - "〒810-0001"
+
+# デフォルトパターン（ベンダー特定できない場合の汎用パターン）
+default_patterns:
+  company_suffixes:
+    - "株式会社"
+    - "有限会社"
+    - "合同会社"
+    - "合資会社"
+    - "合名会社"
+    - "Corporation"
+    - "Corp."
+    - "Inc."
+    - "LLC"
+    - "Ltd."
+  
+  phone_regex:
+    - "\\d{2,4}-\\d{2,4}-\\d{4}"
+    - "\\d{10,11}"
+    - "\\+81-\\d{1,4}-\\d{1,4}-\\d{4}"
+  
+  email_regex:
+    - "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+  
+  postal_code_regex:
+    - "〒\\d{3}-\\d{4}"
+    - "\\d{3}-\\d{4}"
