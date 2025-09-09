@@ -13,6 +13,7 @@ Document Normalizerの詳細ドキュメント集です。
 - **[設定ファイルガイド](CONFIGURATION.md)** - YAML設定、CDMスキーマ、マッピングルール
 
 ### ☁️ 本番環境
+- **[Azure環境構築詳細ガイド](AZURE_SETUP_DETAILED.md)** - 初心者向け超詳細セットアップ手順
 - **[Azureデプロイメント](AZURE_DEPLOYMENT.md)** - Azure環境への本番デプロイ
 - **[CDMスキーマ仕様](CDM_SCHEMA.md)** - 出力データ形式とスキーマ詳細
 
@@ -27,8 +28,9 @@ Document Normalizerの詳細ドキュメント集です。
 2. [日本語処理機能](JAPANESE_PROCESSING.md) - 変換関数追加
 
 ### 本番運用
-1. [Azureデプロイメント](AZURE_DEPLOYMENT.md) - 本番環境構築
-2. [CDMスキーマ仕様](CDM_SCHEMA.md) - データ仕様確認
+1. [Azure環境構築詳細ガイド](AZURE_SETUP_DETAILED.md) - 初心者向け完全ガイド
+2. [Azureデプロイメント](AZURE_DEPLOYMENT.md) - 本番環境構築
+3. [CDMスキーマ仕様](CDM_SCHEMA.md) - データ仕様確認
 
 ## 🔍 よくある質問
 
@@ -42,7 +44,7 @@ A: [設定ファイルガイド](CONFIGURATION.md)のベンダー固有マッピ
 A: [日本語処理機能](JAPANESE_PROCESSING.md)のトラブルシューティング部分を確認してください。
 
 ### Q: Azure環境にデプロイしたいのですが？
-A: [Azureデプロイメント](AZURE_DEPLOYMENT.md)の手順に従ってください。
+A: 初心者の方は[Azure環境構築詳細ガイド](AZURE_SETUP_DETAILED.md)を、経験者の方は[Azureデプロイメント](AZURE_DEPLOYMENT.md)を参照してください。
 
 ### Q: 出力されるJSONの形式を知りたいのですが？
 A: [CDMスキーマ仕様](CDM_SCHEMA.md)で詳細なスキーマ定義を確認できます。
